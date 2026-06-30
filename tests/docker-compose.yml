@@ -1,0 +1,24 @@
+services:
+  postgres:
+    image: postgres:latest
+    container_name: pb_db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgrespassword
+      POSTGRES_DB: pbdb # This is default db, but we will create pbtest ourselves
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./data/init-db.sh:/docker-entrypoint-initdb.d/init-db.sh:Z
+      - ./data/pbtest.dump:/backups/pbtest.dump:Z
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: valkey/valkey:latest
+    container_name: pb_redis
+    ports:
+      - "6379:6379"
