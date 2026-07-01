@@ -1,10 +1,9 @@
 name: basebuild
 
 on:
-  pull_request:
   push:
     tags:
-      - 'v*' # Trigger only for tags starting with 'v'
+      - "v*" # Trigger only for tags starting with 'v'
 
 jobs:
   docker-build-and-push:
